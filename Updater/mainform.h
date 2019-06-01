@@ -3,6 +3,16 @@
 
 #include <QMainWindow>
 
+#include <QDialog>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QMessageBox>
+#include <QByteArray>
+#include <QNetworkReply>
+#include <QRegularExpression>
+#include <QString>
+#include <QKeyEvent>
+#include <QDebug>
+
 namespace Ui {
 class mainForm;
 }
@@ -14,6 +24,10 @@ class mainForm : public QMainWindow
 public:
     explicit mainForm(QWidget *parent = 0);
     ~mainForm();
+
+private slots:
+    void on_pushButton_clicked();
+    void replyFinished(QNetworkReply* reply);
 
 private:
     Ui::mainForm *ui;
