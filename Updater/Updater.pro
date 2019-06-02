@@ -26,10 +26,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        mainform.cpp
+        mainform.cpp \
+    downloader.cpp
 
 HEADERS += \
-        mainform.h
+        mainform.h \
+    header.h \
+    downloader.h
 
 FORMS += \
         mainform.ui
+
+RESOURCES += \
+    resource.qrc

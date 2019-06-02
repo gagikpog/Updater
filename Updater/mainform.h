@@ -3,18 +3,11 @@
 
 #include <QMainWindow>
 
-#include <QDialog>
-#include <QtNetwork/QNetworkAccessManager>
-#include <QMessageBox>
-#include <QByteArray>
-#include <QNetworkReply>
-#include <QRegularExpression>
-#include <QString>
-#include <QKeyEvent>
-#include <QDebug>
+#include "header.h"
+#include "downloader.h"
 
 namespace Ui {
-class mainForm;
+    class mainForm;
 }
 
 class mainForm : public QMainWindow
@@ -26,11 +19,15 @@ public:
     ~mainForm();
 
 private slots:
-    void on_pushButton_clicked();
     void replyFinished(QNetworkReply* reply);
+    void on_btnDownload_clicked();
+    void fileDownloaded(QString filename);
 
 private:
     Ui::mainForm *ui;
+    ServerState* state;
+    void infoUpdate();
+
 };
 
 #endif // MAINFORM_H
