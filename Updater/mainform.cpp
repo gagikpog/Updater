@@ -4,13 +4,23 @@
 mainForm::mainForm(QWidget *parent) : QMainWindow(parent), ui(new Ui::mainForm)
 {
     ui->setupUi(this);
+    //загружает настройки
+    //объект для чтения
+    QSettings settings(settingsFilename, QSettings::IniFormat);
+    //загружает начтройкии
+    version = settings.value("VERSION", "").toString();
+    //если в файле нет информации или файла нет, то устанавливаем версию 0.0.0
+    //это означает что будет скачано все файлы
+    if (version == "")
+    {
+        version = "0.0.0";
+    }
 
     //готовлюсь к отправке запроса
     QNetworkAccessManager *NAM = new QNetworkAccessManager(this);
     //назначаю процедуру для подучения ответа
     connect(NAM, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
 
-    QString version = "0.0.0";
     QString host = "http://k992302t.beget.tech/translate/update.php";
     //отправляю get запрос
     NAM->get(QNetworkRequest(QUrl(host+"?version="+version)));
@@ -29,7 +39,16 @@ void mainForm::replyFinished(QNetworkReply* reply)
     //получаем из его Q строку
     QString DataAsString = QString::fromStdString(response.toStdString());
     state = new ServerState(DataAsString);
+    //выводит информацию полученную с сервера
     infoUpdate();
+    //если у нас последняя версия, сообщаем об этом
+    if (state->version == version)
+    {
+        QMessageBox msg;
+        msg.setWindowTitle("Info");
+        msg.setText("You have the latest version");
+        msg.exec();
+    }
 }
 
 void mainForm::infoUpdate()
@@ -53,7 +72,7 @@ void mainForm::on_btnDownload_clicked()
     QString host = state->host + "?version=" + state->version + "&filename=";
     foreach (auto val, state->changes)
     {
-        QUrl url ( host + val.second);
+        QUrl url ( host + QUrl::toPercentEncoding(val.second));
         int n = val.second.lastIndexOf("/");
         if (n > 0)
         {

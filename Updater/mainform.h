@@ -27,7 +27,8 @@ private:
     Ui::mainForm *ui;
     ServerState* state;
     void infoUpdate();
-
+    const QString settingsFilename = "settings.ini";
+    QString version = "0.0.0";
 };
 
 #endif // MAINFORM_H

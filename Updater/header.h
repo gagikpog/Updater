@@ -19,7 +19,6 @@
 #include <QJsonDocument>
 #include <QJsonArray>
 
-
 struct ServerState
 {
     ServerState(QString jsonStr)
@@ -37,9 +36,6 @@ struct ServerState
             QJsonValue value = chngs.value(key);
             changes.append(QPair<QString,QString>(key, value.toString()));
         }
-
-       // QJsonArray arr = chngs.toArray();
-        //textObject = QJsonDocument::fromJson(chngsQJsonObject.toUtf8()).object();
     }
 
     QString version;
