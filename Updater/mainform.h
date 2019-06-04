@@ -5,6 +5,7 @@
 
 #include "header.h"
 #include "downloader.h"
+#include "connecttoserver.h"
 
 namespace Ui {
     class mainForm;
@@ -19,7 +20,7 @@ public:
     ~mainForm();
 
 private slots:
-    void replyFinished(QNetworkReply* reply);
+    void replyFinished(QString DataAsString);
     void on_btnDownload_clicked();
     void fileDownloaded(QString filename);
 
@@ -27,8 +28,7 @@ private:
     Ui::mainForm *ui;
     ServerState* state;
     void infoUpdate();
-    const QString settingsFilename = "settings.ini";
-    QString version = "0.0.0";
+    ConnectToServer* serverConnection = NULL;
 };
 
 #endif // MAINFORM_H

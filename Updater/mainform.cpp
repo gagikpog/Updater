@@ -4,26 +4,8 @@
 mainForm::mainForm(QWidget *parent) : QMainWindow(parent), ui(new Ui::mainForm)
 {
     ui->setupUi(this);
-    //загружает настройки
-    //объект для чтения
-    QSettings settings(settingsFilename, QSettings::IniFormat);
-    //загружает начтройкии
-    version = settings.value("VERSION", "").toString();
-    //если в файле нет информации или файла нет, то устанавливаем версию 0.0.0
-    //это означает что будет скачано все файлы
-    if (version == "")
-    {
-        version = "0.0.0";
-    }
-
-    //готовлюсь к отправке запроса
-    QNetworkAccessManager *NAM = new QNetworkAccessManager(this);
-    //назначаю процедуру для подучения ответа
-    connect(NAM, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
-
-    QString host = "http://k992302t.beget.tech/translate/update.php";
-    //отправляю get запрос
-    NAM->get(QNetworkRequest(QUrl(host+"?version="+version)));
+    serverConnection = new ConnectToServer(this);
+    connect(serverConnection, SIGNAL(resultData(QString)), this, SLOT(replyFinished(QString)));
 }
 
 mainForm::~mainForm()
@@ -32,17 +14,13 @@ mainForm::~mainForm()
 }
 
 //процедура которая вызывается для приема ответа от сервера
-void mainForm::replyFinished(QNetworkReply* reply)
+void mainForm::replyFinished(QString DataAsString)
 {
-    //преобразование полученных данных в массив байт
-    QByteArray response = reply->readAll();
-    //получаем из его Q строку
-    QString DataAsString = QString::fromStdString(response.toStdString());
     state = new ServerState(DataAsString);
     //выводит информацию полученную с сервера
     infoUpdate();
     //если у нас последняя версия, сообщаем об этом
-    if (state->version == version)
+    if (state->version == serverConnection->getVersion())
     {
         QMessageBox msg;
         msg.setWindowTitle("Info");

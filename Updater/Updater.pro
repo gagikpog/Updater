@@ -27,12 +27,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         mainform.cpp \
-    downloader.cpp
+    downloader.cpp \
+    connecttoserver.cpp
 
 HEADERS += \
         mainform.h \
     header.h \
-    downloader.h
+    downloader.h \
+    connecttoserver.h
 
 FORMS += \
         mainform.ui
