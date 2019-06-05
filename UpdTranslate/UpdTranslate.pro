@@ -4,12 +4,24 @@
 #
 #-------------------------------------------------
 
+VERSION = 1.0.0.0
+
+#!win32:BUILDNO = $$(build.sh)
+#win32:BUILDNO = $$(build.bat)
+#DEFINES += BUILD=$${BUILDNO}
+build_pass:CONFIG(debug, debug|release) {
+    unix: TARGET = $$join(TARGET,,,_debug)
+    else: TARGET = $$join(TARGET,,,d)
+}
+
+
+
 QT       += core gui widgets
 QT       += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = Updater
+TARGET = UpdTranslate
 TEMPLATE = app
 
 # The following define makes your compiler emit warnings if you use
