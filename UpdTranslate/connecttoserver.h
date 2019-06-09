@@ -29,19 +29,4 @@ private slots:
 };
 
 
-class CommandLineMode: public QObject
-{
-    Q_OBJECT
-public:
-    explicit CommandLineMode(QObject* parent = 0) : QObject(parent){}
-    virtual ~CommandLineMode(){}
-public slots:
-    void result(QString res)
-    {
-        ServerState state(res);
-        qDebug() << "version:" << state.version << ",build:" << state.build;
-        exit(0);
-    }
-};
-
 #endif // CONNECTTOSERVER_H

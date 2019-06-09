@@ -2,24 +2,39 @@
 #include <QApplication>
 
 #include "connecttoserver.h"
+#include "commandlinemode.h"
+#include <iostream>
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    mainForm w;
+    mainForm* w;
+//    std::cout << "hello world";
+//    qDebug() << "goodbye world";
     if (argc >= 2)
     {
-        if (strlen(argv[1]) >= 2)
+        bool download = false,
+             hide = false;
+        for (int i = 1; i < argc; i++)
         {
-            if (argv[1][0] == '-' && argv[1][1] == 'h')
+            QString key (argv[i]);
+            hide |= key == "-h";
+            download |= key == "-d";
+        }
+
+        if (hide)
+        {
+            ConnectToServer* server = new ConnectToServer();
+            CommandLineMode* clm = new CommandLineMode();
+            QObject::connect(server, SIGNAL(resultData(QString)), clm, SLOT(result(QString)));
+            if (download)
             {
-                ConnectToServer* server = new ConnectToServer();
-                CommandLineMode* clm = new CommandLineMode();
-                QObject::connect(server, SIGNAL(resultData(QString)), clm, SLOT(result(QString)));
+                clm->enableHideDownloadMode();
             }
         }
     } else {
-        w.show();
+        w = new mainForm();
+        w->show();
     }
     return a.exec();
 }

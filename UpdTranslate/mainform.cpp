@@ -16,14 +16,19 @@ mainForm::~mainForm()
 //процедура которая вызывается для приема ответа от сервера
 void mainForm::replyFinished(QString DataAsString)
 {
+    QMessageBox msg;
+    msg.setWindowTitle("Info");
+    if (DataAsString == "")
+    {
+        msg.setText("Could not connect to server");
+        msg.exec();
+    }
     state = new ServerState(DataAsString);
     //выводит информацию полученную с сервера
     infoUpdate();
     //если у нас последняя версия, сообщаем об этом
     if (state->version == serverConnection->getVersion())
     {
-        QMessageBox msg;
-        msg.setWindowTitle("Info");
         msg.setText("You have the latest version");
         msg.exec();
     }

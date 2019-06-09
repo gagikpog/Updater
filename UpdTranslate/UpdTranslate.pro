@@ -40,13 +40,15 @@ SOURCES += \
         main.cpp \
         mainform.cpp \
     downloader.cpp \
-    connecttoserver.cpp
+    connecttoserver.cpp \
+    commandlinemode.cpp
 
 HEADERS += \
         mainform.h \
     header.h \
     downloader.h \
-    connecttoserver.h
+    connecttoserver.h \
+    commandlinemode.h
 
 FORMS += \
         mainform.ui

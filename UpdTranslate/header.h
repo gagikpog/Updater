@@ -27,7 +27,7 @@ struct ServerState
         version = textObject.value("version").toString();
         build = textObject.value("build").toString();
         host = textObject.value("host").toString();
-
+        force = textObject.value("force").toString() == "true";
 
         QJsonObject chngs = textObject.value("changes").toObject();
 
@@ -41,6 +41,7 @@ struct ServerState
     QString version;
     QString build;
     QString host;
+    bool force;
     QList<QPair<QString, QString>> changes;
 };
 

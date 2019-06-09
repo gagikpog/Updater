@@ -18,8 +18,13 @@ void FileDownloader::setFilename(QString filename)
 void FileDownloader::fileDownloaded(QNetworkReply* pReply)
 {
     m_DownloadedData = pReply->readAll();
-    SaveFromFile();
-    emit downloaded(_filename);
+    if (m_DownloadedData.length() != 0)
+    {
+        SaveFromFile();
+        emit downloaded(_filename);
+    } else {
+        qDebug() << "no connection";
+    }
 }
 
 bool FileDownloader::SaveFromFile()
